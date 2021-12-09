@@ -35,6 +35,16 @@ checkstyle {
     toolVersion '9.0'
 }
 
+dependencies {
+    implementation 'info.picocli:picocli:4.6.2'
+    annotationProcessor 'info.picocli:picocli-codegen:4.6.2'
+}
+
+
+compileJava {
+    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
+}
+
 
 group = 'hexlet.code'
 version = '1.0-SNAPSHOT'
