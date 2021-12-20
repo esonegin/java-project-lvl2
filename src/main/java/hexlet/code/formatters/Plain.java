@@ -1,32 +1,9 @@
 package hexlet.code.formatters;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Formatters {
-    //Конвертируем map в JSON строку stylish
-    public static String stylish(List<Map<String, Object>> list) {
-        StringBuilder res = new StringBuilder("{\n");
-        for (Map<String, Object> map : list) {
-            if (map.get("status").equals("nothing")) {
-                res.append("    ").append(map.get("field")).append(": ").append(map.get("value1")).append("\n");
-            } else if (map.get("status").equals("update")) {
-                res.append("  - ").append(map.get("field")).append(": ").append(map.get("value1")).append("\n");
-                res.append("  + ").append(map.get("field")).append(": ").append(map.get("value2")).append("\n");
-            } else if (map.get("status").equals("remove")) {
-                res.append("  - ").append(map.get("field")).append(": ").append(map.get("value1")).append("\n");
-            } else if (map.get("status").equals("added")) {
-                res.append("  + ").append(map.get("field")).append(": ").append(map.get("value2")).append("\n");
-            }
-        }
-        res.append("}");
-        return res.toString();
-    }
-
+public class Plain {
     //Конвертируем map в JSON строку plain
     public static String plain(List<Map<String, Object>> list) {
         StringBuilder res = new StringBuilder();
@@ -67,13 +44,5 @@ public class Formatters {
             }
         }
         return res.toString();
-    }
-
-    public static String json(List<Map<String, Object>> list) throws JsonProcessingException {
-        String res = "";
-        for (Map map : list) {
-            res += new ObjectMapper().writeValueAsString(map);
-        }
-        return res;
     }
 }

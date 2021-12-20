@@ -46,13 +46,14 @@ public class App implements Callable<String> {
         return "0";
     }
 
-    public static Path getFilepath1() {
-        return filepath1;
+    public static String getFilepath1() {
+        return String.valueOf(filepath1);
     }
 
-    public static Path getFilepath2() {
-        return filepath2;
+    public static String getFilepath2() {
+        return String.valueOf(filepath2);
     }
+
     public static String getFormatName() {
         return formatname;
     }

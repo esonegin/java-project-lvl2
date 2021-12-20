@@ -1,7 +1,5 @@
 package hexlet.code;
 
-import hexlet.code.formatters.Formatters;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -10,29 +8,45 @@ import java.util.*;
 
 public class Differ {
 
-    public static String generate(Path filepath1, Path filepath2, String formatName) throws IOException {
+    public static String generate(String filepath1, String filepath2, String formatName) throws IOException {
         //Получаем формат файла
         String fileformat = "";
-        String res = "";
-        if (String.valueOf(filepath1).contains("json")) {
+        String filename = String.valueOf(filepath1);
+        //String file2 = String.valueOf(filepath2));
+        if (filename.contains("json")) {
             fileformat = "json";
         } else if (String.valueOf(filepath1).contains("yml")) {
             fileformat = "yml";
         }
-
         Parser parser = new Parser(fileformat, formatName);
 
-        Map<Object, Object> firstMap = parser.toMapConverter(filepath1);
-        Map<Object, Object> secondMap = parser.toMapConverter(filepath2);
+        Map<Object, Object> firstMap = parser.toMapConverter(Path.of(filepath1));
+        Map<Object, Object> secondMap = parser.toMapConverter(Path.of(filepath2));
 
         TreeSet<Object> sortedKeys = getSortedKeys(firstMap, secondMap);
         List<Map<String, Object>> list = listGenerate(firstMap, secondMap, sortedKeys);
-        switch (formatName) {
-            case "stylish" -> res = Formatters.stylish(list);
-            case "plain" -> res = Formatters.plain(list);
-            case "json" -> res = Formatters.json(list);
+
+        return Formatter.createFormatter(formatName, list).formatter(formatName, list);
+    }
+
+    public static String generate(String filepath1, String filepath2) throws IOException {
+        //Получаем формат файла
+        String fileformat = "";
+        String filename = String.valueOf(filepath1);
+        if (filename.contains("json")) {
+            fileformat = "json";
+        } else if (String.valueOf(filepath1).contains("yml")) {
+            fileformat = "yml";
         }
-        return res;
+        Parser parser = new Parser(fileformat, "stylish");
+
+        Map<Object, Object> firstMap = parser.toMapConverter(Path.of(filepath1));
+        Map<Object, Object> secondMap = parser.toMapConverter(Path.of(filepath2));
+
+        TreeSet<Object> sortedKeys = getSortedKeys(firstMap, secondMap);
+        List<Map<String, Object>> list = listGenerate(firstMap, secondMap, sortedKeys);
+
+        return Formatter.createFormatter("stylish", list).formatter("stylish", list);
     }
 
 
