@@ -43,6 +43,7 @@ public class Plain {
                         .append("\n");
             }
         }
+        res.deleteCharAt(res.length() - 1);
         return res.toString();
     }
 }
