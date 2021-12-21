@@ -5,6 +5,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
+import java.util.concurrent.Callable;
 
 import java.nio.file.Path;
 
@@ -13,7 +14,17 @@ import java.nio.file.Path;
 @Command(name = "gendiff", mixinStandardHelpOptions = true, version = "app 1.0",
         description = "Prints output the difference between the data as a string")
 
-public class App {
+public final class App implements Callable<Integer> {
+
+    @Override
+    public Integer call() throws Exception {
+        Differ.generate(getFilepath1(), getFilepath2(), getFormatName());
+        return 0;
+    }
+    public static void main(String[] args) throws Exception {
+        int exitCode = new CommandLine(new App()).execute(args);
+        System.exit(exitCode);
+    }
 
     @Parameters(index = "0", description = "path to first file")
     private static Path filepath1;
@@ -24,24 +35,16 @@ public class App {
 
     @Parameters(index = "2", description = "output format")
     private static String formatname;
-    // = "/Users/user/Hexlet/java-project-lvl2/src/test/resources/filepath1.json"
 
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
-    private final boolean helpRequested = false;
+    private boolean helpRequested = false;
 
     @Option(names = {"-f", "--format=format"}, description = "output format [default: stylish]")
-    private final boolean format = false;
+    private String format = "stylish";
 
     @Option(names = {"-v", "--version "}, description = "Print version information and exit.")
     private boolean versionRequested = false;
 
-    public static void main(String[] args) throws Exception {
-        new CommandLine(new App()).execute(args);
-        Differ.generate(getFilepath1(), getFilepath2(), getFormatName());
-    }
-    /*public String call() {
-        return "0";
-    }*/
     public static String getFilepath1() {
         return String.valueOf(filepath1);
     }

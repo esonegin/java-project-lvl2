@@ -10,12 +10,25 @@ import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.LinkedHashMap;
+import java.util.HashSet;
+import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class DifferTest {
+
+    private final int overVal = 1000;
+    private final int firstIn1000 = 500;
+    private final int secondIn1000 = 501;
+    private final int overIndex = 1002;
+    private final int putInt = 50;
 
     @BeforeClass
     public static void globalSetUp() {
@@ -29,8 +42,10 @@ public class DifferTest {
 
     @Test
     public void generalJSONGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json",
+                "stylish");
         String expected = """
                 {
                   - follow: false
@@ -46,8 +61,10 @@ public class DifferTest {
 
     @Test
     public void plainNestingGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath1.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath2.json", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath1.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath2.json",
+                "stylish");
         String expected = """
                 {
                     chars1: [a, b, c]
@@ -80,7 +97,8 @@ public class DifferTest {
 
     @Test
     public void plainNestingWithoutFormatGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath1.json",
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath1.json",
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath2.json");
         String expected = """
                 {
@@ -114,8 +132,10 @@ public class DifferTest {
 
     @Test
     public void plainJSONestingGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath1.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath2.json", "plain");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath1.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath2.json",
+                "plain");
         String expected = """
                 Property 'chars2' was updated. From [complex value] to false
                 Property 'checked' was updated. From false to true
@@ -136,8 +156,10 @@ public class DifferTest {
 
     @Test
     public void generalJSONMultiRunTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json",
+                "stylish");
         String expected = """
                 {
                   - follow: false
@@ -149,17 +171,21 @@ public class DifferTest {
                 }""";
 
         Assert.assertEquals(expected, actual);
-        for (int i = 0; i < 1000; i++) {
-            actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
-                    "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json", "stylish");
+        for (int i = 0; i < overVal; i++) {
+            actual = Differ.generate(
+                    "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
+                    "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json",
+                    "stylish");
             Assert.assertEquals(expected, actual);
         }
     }
 
     @Test
     public void emptyJSONSecondGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
+                "stylish");
         String expected = """
                 {
                   - follow: false
@@ -173,8 +199,10 @@ public class DifferTest {
 
     @Test
     public void emptyJSONFirstGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
+                "stylish");
         String expected = """
                 {
                   + follow: false
@@ -188,19 +216,21 @@ public class DifferTest {
 
     @Test
     public void emptyJSONFirstAndSecondGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json", "stylish");
-        String expected = "{\n" +
-                "}";
-
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
+                "stylish");
+        String expected = "{\n}";
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void notJSONTGenerateest() {
         Throwable thrown = assertThrows(JsonParseException.class, () ->
-                Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/juststring.json", "stylish"));
+                Differ.generate(
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/juststring.json",
+                        "stylish"));
         assertNotNull(thrown.getMessage());
 
     }
@@ -208,19 +238,22 @@ public class DifferTest {
     @Test
     public void breakJSONGenerateTest() {
         Throwable thrown = assertThrows(JsonParseException.class, () ->
-                        Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/break.json", "stylish"));
+                Differ.generate(
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/break.json",
+                        "stylish"));
         assertNotNull(thrown.getMessage());
     }
 
     @Test
     public void breakJSONPathGenerateTest() {
         Throwable thrown = assertThrows(FileNotFoundException.class, () ->
-                        Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json", "stylish"));
+                Differ.generate(
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath.json",
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json",
+                        "stylish"));
         assertNotNull(thrown.getMessage());
     }
-
 
 
     //getSortedKeys
@@ -228,13 +261,13 @@ public class DifferTest {
     public void getSortedKeysIntegerTest() {
         Map<Object, Object> first = new LinkedHashMap<>();
         Map<Object, Object> second = new LinkedHashMap<>();
-        for (int i = 500, k = 501; i > -1; i--, k++) {
+        for (int i = firstIn1000, k = secondIn1000; i > -1; i--, k++) {
             first.put(i, "test");
             second.put(k, "test");
         }
         TreeSet<Object> actual = Differ.getSortedKeys(first, second);
-        Integer[] arrvalues = new Integer[1002];
-        for (int i = 0; i < 1002; i++) {
+        Integer[] arrvalues = new Integer[overIndex];
+        for (int i = 0; i < overIndex; i++) {
             arrvalues[i] = i;
         }
         Set<Integer> expected = new HashSet<>(Arrays.asList(arrvalues));
@@ -246,25 +279,29 @@ public class DifferTest {
     public void getMapConverterTest() throws Exception {
         LinkedHashMap<Object, Object> expected = new LinkedHashMap<>();
         expected.put("host", "hexlet.io");
-        expected.put("timeout", 50);
+        expected.put("timeout", putInt);
         expected.put("proxy", "123.234.53.22");
         expected.put("follow", false);
-        Map<?, ?> actual = Parser.toMapConverter(Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"));
+        Map<?, ?> actual = Parser.toMapConverter(
+                Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"));
         assertEquals(expected, actual);
     }
 
     @Test
     public void getEmptyMapConverterTest() throws Exception {
         LinkedHashMap<String, Object> expected = new LinkedHashMap<>();
-        Map<?, ?> actual = Parser.toMapConverter(Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"));
+        Map<?, ?> actual = Parser.toMapConverter(
+                Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"));
         assertEquals(0, actual.size());
         assertEquals(expected, actual);
     }
 
     @Test
     public void generalYmlGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml",
+                "stylish");
         String expected = """
                 {
                   - follow: false
@@ -277,10 +314,13 @@ public class DifferTest {
 
         Assert.assertEquals(expected, actual);
     }
+
     @Test
     public void generaYmllMultiRunTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml",
+                "stylish");
         String expected = """
                 {
                   - follow: false
@@ -292,17 +332,21 @@ public class DifferTest {
                 }""";
 
         Assert.assertEquals(expected, actual);
-        for (int i = 0; i < 1000; i++) {
-            actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
-                    "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml", "stylish");
+        for (int i = 0; i < overVal; i++) {
+            actual = Differ.generate(
+                    "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
+                    "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml",
+                    "stylish");
             Assert.assertEquals(expected, actual);
         }
     }
 
     @Test
     public void emptyYmlSecondGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
+                "stylish");
         String expected = """
                 {
                   - follow: false
@@ -316,8 +360,10 @@ public class DifferTest {
 
     @Test
     public void emptyYmlFirstGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
+                "stylish");
         String expected = """
                 {
                   + follow: false
@@ -331,10 +377,11 @@ public class DifferTest {
 
     @Test
     public void emptyYmlFirstAndSecondGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml", "stylish");
-        String expected = "{\n" +
-                "}";
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
+                "stylish");
+        String expected = "{\n}";
 
         Assert.assertEquals(expected, actual);
     }
@@ -342,15 +389,19 @@ public class DifferTest {
     @Test
     public void breakYmlPathGenerateTest() {
         Throwable thrown = assertThrows(FileNotFoundException.class, () ->
-                        Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath.yml",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml", "stylish"));
+                Differ.generate(
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath.yml",
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml",
+                        "stylish"));
         assertNotNull(thrown.getMessage());
     }
 
     @Test
     public void generalYmlNestingGenerateTest() throws Exception {
-        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/nestingfilepath1.yml",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/nestingfilepath2.yml", "stylish");
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/nestingfilepath1.yml",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/nestingfilepath2.yml",
+                "stylish");
         String expected = """
                 {
                     chars1: [a, b, c]
@@ -383,14 +434,15 @@ public class DifferTest {
 
     @Test
     public void generalJSONDefaultGenerateTest() throws Exception {
-        String actual = Differ.generate
-                ("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json", "json");
-        String expected = "{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"}" +
-                "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"}" +
-                "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"}" +
-                "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"}" +
-                "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}";
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json",
+                "json");
+        String expected = "{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"}"
+                + "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"}"
+                + "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"}"
+                + "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"}"
+                + "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}";
 
         Assert.assertEquals(expected, actual);
     }

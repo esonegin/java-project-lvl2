@@ -21,8 +21,7 @@ final class Formatter {
     }
 
     public static Formatter createFormatter(String formatName, List<Map<?, ?>> list) {
-        Formatter formatter = new FormatterBuilder().setFormatName(formatName).setList(list).createFormatter();
-        return formatter;
+        return new FormatterBuilder().setFormatName(formatName).setList(list).createFormatter();
     }
 
     public String formatter() throws IOException {
