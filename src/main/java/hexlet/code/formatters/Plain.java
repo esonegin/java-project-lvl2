@@ -5,9 +5,9 @@ import java.util.Map;
 
 public class Plain {
     //Конвертируем map в JSON строку plain
-    public static String plain(List<Map<String, Object>> list) {
+    public static String plain(List<Map<?, ?>> list) {
         StringBuilder res = new StringBuilder();
-        for (Map<String, Object> map : list) {
+        for (Map map : list) {
             if (map.get("value1") != null && map.get("value1").getClass().toString().equals("class java.lang.String")) {
                 map.put("value1", "'" + map.get("value1") + "'");
             }

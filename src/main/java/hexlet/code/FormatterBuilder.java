@@ -5,19 +5,19 @@ import java.util.Map;
 
 public class FormatterBuilder {
     private String formatName;
-    private List<Map<String, Object>> list;
+    private List<Map<?, ?>> list;
 
-    public FormatterBuilder setFormatName(String formatName) {
-        this.formatName = formatName;
+    final FormatterBuilder setFormatName(String format) {
+        this.formatName = format;
         return this;
     }
 
-    public FormatterBuilder setList(List<Map<String, Object>> list) {
-        this.list = list;
+    final FormatterBuilder setList(List<Map<?, ?>> mapslist) {
+        this.list = mapslist;
         return this;
     }
 
-    public Formatter createFormatter() {
+    final Formatter createFormatter() {
         return new Formatter(formatName, list);
     }
 }

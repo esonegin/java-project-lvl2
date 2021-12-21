@@ -79,6 +79,40 @@ public class DifferTest {
     }
 
     @Test
+    public void plainNestingWithoutFormatGenerateTest() throws Exception {
+        String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath1.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath2.json");
+        String expected = """
+                {
+                    chars1: [a, b, c]
+                  - chars2: [d, e, f]
+                  + chars2: false
+                  - checked: false
+                  + checked: true
+                  - default: null
+                  + default: [value1, value2]
+                  - id: 45
+                  + id: null
+                  - key1: value1
+                  + key2: value2
+                    numbers1: [1, 2, 3, 4]
+                  - numbers2: [2, 3, 4, 5]
+                  + numbers2: [22, 33, 44, 55]
+                  - numbers3: [3, 4, 5]
+                  + numbers4: [4, 5, 6]
+                  + obj1: {nestedKey=value, isNested=true}
+                  - setting1: Some value
+                  + setting1: Another value
+                  - setting2: 200
+                  + setting2: 300
+                  - setting3: true
+                  + setting3: none
+                }""";
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     public void plainJSONestingGenerateTest() throws Exception {
         String actual = Differ.generate("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath1.json",
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/nestingfilepath2.json", "plain");
@@ -95,8 +129,7 @@ public class DifferTest {
                 Property 'obj1' was added with value: [complex value]
                 Property 'setting1' was updated. From 'Some value' to 'Another value'
                 Property 'setting2' was updated. From 200 to 300
-                Property 'setting3' was updated. From true to 'none'
-                """;
+                Property 'setting3' was updated. From true to 'none'""";
 
         Assert.assertEquals(expected, actual);
     }
@@ -216,14 +249,14 @@ public class DifferTest {
         expected.put("timeout", 50);
         expected.put("proxy", "123.234.53.22");
         expected.put("follow", false);
-        Map<Object, Object> actual = Parser.toMapConverter(Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"));
+        Map<?, ?> actual = Parser.toMapConverter(Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"));
         assertEquals(expected, actual);
     }
 
     @Test
     public void getEmptyMapConverterTest() throws Exception {
         LinkedHashMap<String, Object> expected = new LinkedHashMap<>();
-        Map<Object, Object> actual = Parser.toMapConverter(Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"));
+        Map<?, ?> actual = Parser.toMapConverter(Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"));
         assertEquals(0, actual.size());
         assertEquals(expected, actual);
     }

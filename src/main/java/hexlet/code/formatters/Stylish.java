@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Stylish {
-    public static String stylish(List<Map<String, Object>> list) {
+    public static String stylish(List<Map<?, ?>> list) {
         StringBuilder res = new StringBuilder("{\n");
-        for (Map<String, Object> map : list) {
+        for (Map<?, ?> map : list) {
             if (map.get("status").equals("nothing")) {
                 res.append("    ").append(map.get("field")).append(": ").append(map.get("value1")).append("\n");
             } else if (map.get("status").equals("update")) {

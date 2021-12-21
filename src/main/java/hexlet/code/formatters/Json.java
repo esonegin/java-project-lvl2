@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Json {
-    public static String json(List<Map<String, Object>> list) throws JsonProcessingException {
+    public static String json(List<Map<?, ?>> list) throws JsonProcessingException {
         String res = "";
         for (Map map : list) {
             res += new ObjectMapper().writeValueAsString(map);

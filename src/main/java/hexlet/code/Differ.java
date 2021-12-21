@@ -3,10 +3,16 @@ package hexlet.code;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.*;
-
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.TreeSet;
+import java.util.Objects;
 
 public class Differ {
+
+    private static Parser parser;
 
     public static String generate(String filepath1, String filepath2, String formatName) throws IOException {
         //Получаем формат файла
@@ -18,15 +24,14 @@ public class Differ {
         } else if (String.valueOf(filepath1).contains("yml")) {
             fileformat = "yml";
         }
-        Parser parser = new Parser(fileformat, formatName);
-
-        Map<Object, Object> firstMap = parser.toMapConverter(Path.of(filepath1));
-        Map<Object, Object> secondMap = parser.toMapConverter(Path.of(filepath2));
+        parser = new Parser(fileformat);
+        Map<?, ?> firstMap = Parser.toMapConverter(Path.of(filepath1));
+        Map<?, ?> secondMap = Parser.toMapConverter(Path.of(filepath2));
 
         TreeSet<Object> sortedKeys = getSortedKeys(firstMap, secondMap);
-        List<Map<String, Object>> list = listGenerate(firstMap, secondMap, sortedKeys);
+        List<Map<?, ?>> list = listGenerate(firstMap, secondMap, sortedKeys);
 
-        return Formatter.createFormatter(formatName, list).formatter(formatName, list);
+        return Formatter.createFormatter(formatName, list).formatter();
     }
 
     public static String generate(String filepath1, String filepath2) throws IOException {
@@ -38,21 +43,19 @@ public class Differ {
         } else if (String.valueOf(filepath1).contains("yml")) {
             fileformat = "yml";
         }
-        Parser parser = new Parser(fileformat, "stylish");
-
-        Map<Object, Object> firstMap = parser.toMapConverter(Path.of(filepath1));
-        Map<Object, Object> secondMap = parser.toMapConverter(Path.of(filepath2));
+        parser = new Parser(fileformat);
+        Map<?, ?> firstMap = parser.toMapConverter(Path.of(filepath1));
+        Map<?, ?> secondMap = parser.toMapConverter(Path.of(filepath2));
 
         TreeSet<Object> sortedKeys = getSortedKeys(firstMap, secondMap);
-        List<Map<String, Object>> list = listGenerate(firstMap, secondMap, sortedKeys);
+        List<Map<?, ?>> list = listGenerate(firstMap, secondMap, sortedKeys);
 
-        return Formatter.createFormatter("stylish", list).formatter("stylish", list);
+        return Formatter.createFormatter("stylish", list).formatter();
     }
 
 
-    public static List<Map<String, Object>> listGenerate(Map<Object, Object> first, Map<Object, Object> second,
-                                                         TreeSet<Object> getSortedKeys) {
-        List<Map<String, Object>> result = new ArrayList<>();
+    public static List<Map<?, ?>> listGenerate(Map<?, ?> first, Map<?, ?> second, TreeSet<Object> getSortedKeys) {
+        List<Map<?, ?>> result = new ArrayList<>();
         for (Object key : getSortedKeys) {
             Map<String, Object> map = new HashMap<>();
             map.put("field", key);
@@ -81,9 +84,9 @@ public class Differ {
     }
 
     //Собираем и сортируем ключи мап в один отсортированный set
-    public static TreeSet<Object> getSortedKeys(Map<Object, Object> file1, Map<Object, Object> file2) {
-        Set<Object> keys1 = file1.keySet();
-        Set<Object> keys2 = file2.keySet();
+    public static TreeSet<Object> getSortedKeys(Map<?, ?> file1, Map<?, ?> file2) {
+        Set<?> keys1 = file1.keySet();
+        Set<?> keys2 = file2.keySet();
         TreeSet<Object> mergedKeys = new TreeSet<>();
         mergedKeys.addAll(keys1);
         mergedKeys.addAll(keys2);

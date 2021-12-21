@@ -12,33 +12,39 @@ import java.util.Map;
 
 final class Formatter {
 
-    private String formatName;
-    private List<Map<String, Object>> list;
+    private final String formatName;
+    private final List<Map<?, ?>> list;
 
-    Formatter(String formatName, List<Map<String, Object>> list) {
-        this.formatName = formatName;
-        this.list = list;
+    Formatter(String format, List<Map<?, ?>> mapslist) {
+        this.formatName = format;
+        this.list = mapslist;
     }
 
-    public static Formatter createFormatter(String formatName, List<Map<String, Object>> list) {
-        return new FormatterBuilder().setFormatName(formatName).setList(list).createFormatter();
+    public static Formatter createFormatter(String formatName, List<Map<?, ?>> list) {
+        Formatter formatter = new FormatterBuilder().setFormatName(formatName).setList(list).createFormatter();
+        return formatter;
     }
 
-    public String formatter(String formatName, List<Map<String, Object>> list) throws IOException {
-        String res = "";
+    public String formatter() throws IOException {
         switch (formatName) {
-            case "stylish" -> res = Stylish.stylish(list);
-            case "plain" -> res = Plain.plain(list);
-            case "json" -> res = Json.json(list);
+            case "stylish" -> {
+                return Stylish.stylish(list);
+            }
+            case "plain" -> {
+                return Plain.plain(list);
+            }
+            case "json" -> {
+                return Json.json(list);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + formatName);
         }
-        return res;
     }
 
     private String getFormatName() {
         return this.formatName;
     }
 
-    private List<Map<String, Object>> getFormatList() {
+    private List<Map<?, ?>> getFormatList() {
         return this.list;
     }
 }
