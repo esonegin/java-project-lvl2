@@ -18,7 +18,7 @@ public final class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        Differ.generate(getFilepath1(), getFilepath2(), getFormatName());
+        System.out.println(Differ.generate(getFilepath1(), getFilepath2(), getFormatName()));
         return 0;
     }
     public static void main(String[] args) throws Exception {
@@ -33,14 +33,14 @@ public final class App implements Callable<Integer> {
     @Parameters(index = "1", description = "path to second file")
     private static Path filepath2;
 
-    @Parameters(index = "2", description = "output format")
+    @Parameters(index = "2", defaultValue = "stylish", description = "output format")
     private static String formatname;
 
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
     private boolean helpRequested = false;
 
-    @Option(names = {"-f", "--format=format"}, description = "output format [default: stylish]")
-    private String format = "stylish";
+    @Option(names = {"-f", "--format=format"}, interactive = true, description = "output format [default: stylish]")
+    private String format;
 
     @Option(names = {"-v", "--version "}, description = "Print version information and exit.")
     private boolean versionRequested = false;

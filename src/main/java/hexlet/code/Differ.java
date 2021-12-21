@@ -49,7 +49,6 @@ public class Differ {
 
         TreeSet<Object> sortedKeys = getSortedKeys(firstMap, secondMap);
         List<Map<?, ?>> list = listGenerate(firstMap, secondMap, sortedKeys);
-
         return Formatter.createFormatter("stylish", list).formatter();
     }
 
