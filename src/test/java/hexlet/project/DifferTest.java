@@ -447,4 +447,37 @@ public class DifferTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void emptyJSONAndYmlPlainTest() throws Exception {
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
+                "plain");
+        String expected = "";
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void emptyJSONAndYmlJsonTest() throws Exception {
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
+                "json");
+        String expected = "";
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void emptyJSONAndYmlStylishTest() throws Exception {
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
+                "json");
+        String expected = "";
+
+        Assert.assertEquals(expected, actual);
+    }
+
 }

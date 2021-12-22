@@ -43,7 +43,9 @@ public class Plain {
                         .append("\n");
             }
         }
-        res.deleteCharAt(res.length() - 1);
+        if (res.length() > 0) {
+            res.deleteCharAt(res.length() - 1);
+        }
         return res.toString();
     }
 }
