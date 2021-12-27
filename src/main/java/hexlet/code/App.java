@@ -36,11 +36,11 @@ public final class App implements Callable<Integer> {
     private static String formatname;
 
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
-    private final boolean helpRequested = false;
+    private boolean helpRequested = false;
 
     @Option(names = {"-f", "--format=format"}, interactive = true, description = "output format [default: stylish]")
     private String format;
 
     @Option(names = {"-v", "--version "}, description = "Print version information and exit.")
-    private final boolean versionRequested = false;
+    private boolean versionRequested = false;
 }
