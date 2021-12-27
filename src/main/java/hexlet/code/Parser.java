@@ -1,24 +1,15 @@
 package hexlet.code;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.yaml.snakeyaml.Yaml;
-import java.io.FileInputStream;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Map;
 
 public class Parser {
-
-    private static String fileformat = null;
-
-    public Parser(String format) {
-        Parser.fileformat = format;
-
-    }
-
     //Конвертируем содержимое JSON файла в map
-    public static Map<?, ?> toMapConverter(Path file) throws IOException {
+    public static Map<?, ?> toMapConverter(Path file, String fileformat) throws IOException {
         Map<?, ?> map = null;
         if (fileformat.equals("json")) {
             try {
@@ -28,10 +19,13 @@ public class Parser {
                 ex.printStackTrace();
             }
         } else if (fileformat.equals("yml")) {
-            InputStream inputStream = new FileInputStream(String.valueOf(file));
-            Yaml yaml = new Yaml();
-            map = yaml.load(inputStream);
-            return map;
+            try {
+                ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+                mapper.findAndRegisterModules();
+                map = (Map<?, ?>) mapper.readValue(file.toFile(), Map.class);
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+            }
         }
         return map;
     }

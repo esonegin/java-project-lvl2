@@ -2,7 +2,6 @@ package hexlet.project;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import hexlet.code.Differ;
-import hexlet.code.Parser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -17,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Arrays;
 
+import static hexlet.code.Parser.toMapConverter;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -282,16 +282,16 @@ public class DifferTest {
         expected.put("timeout", putInt);
         expected.put("proxy", "123.234.53.22");
         expected.put("follow", false);
-        Map<?, ?> actual = Parser.toMapConverter(
-                Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"));
+        Map<?, ?> actual = toMapConverter(
+                Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"), "json");
         assertEquals(expected, actual);
     }
 
     @Test
     public void getEmptyMapConverterTest() throws Exception {
         LinkedHashMap<String, Object> expected = new LinkedHashMap<>();
-        Map<?, ?> actual = Parser.toMapConverter(
-                Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"));
+        Map<?, ?> actual = toMapConverter(
+                Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"), "json");
         assertEquals(0, actual.size());
         assertEquals(expected, actual);
     }

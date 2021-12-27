@@ -12,19 +12,15 @@ import java.util.Map;
 
 final class Formatter {
 
-    private final String formatName;
-    private final List<Map<?, ?>> list;
+    private static String formatName = null;
+    private static List<Map<?, ?>> list = null;
 
     Formatter(String format, List<Map<?, ?>> mapslist) {
-        this.formatName = format;
-        this.list = mapslist;
+        formatName = format;
+        list = mapslist;
     }
 
-    public static Formatter createFormatter(String formatName, List<Map<?, ?>> list) {
-        return new FormatterBuilder().setFormatName(formatName).setList(list).createFormatter();
-    }
-
-    public String formatter() throws IOException {
+    public static String formatter() throws IOException {
         switch (formatName) {
             case "stylish" -> {
                 return Stylish.stylish(list);
@@ -37,13 +33,5 @@ final class Formatter {
             }
             default -> throw new IllegalStateException("Unexpected value: " + formatName);
         }
-    }
-
-    private String getFormatName() {
-        return this.formatName;
-    }
-
-    private List<Map<?, ?>> getFormatList() {
-        return this.list;
     }
 }
