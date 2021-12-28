@@ -38,7 +38,7 @@ public final class App implements Callable<Integer> {
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
     private boolean helpRequested = false;
 
-    @Option(names = {"-f", "--format=format"}, interactive = true, description = "output format [default: stylish]")
+    @Option(names = {"-f", "--format=format"}, description = "output format [default: stylish]")
     private String format;
 
     @Option(names = {"-v", "--version "}, description = "Print version information and exit.")

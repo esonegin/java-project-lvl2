@@ -480,4 +480,18 @@ public class DifferTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void ymlToJSONTest() throws Exception {
+        String actual = Differ.generate(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml",
+                "json");
+        String expected = "{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"}"
+                + "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"}"
+                + "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"}"
+                + "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"}"
+                + "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}";
+
+        Assert.assertEquals(expected, actual);
+    }
 }
