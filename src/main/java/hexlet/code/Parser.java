@@ -11,7 +11,7 @@ public class Parser {
     //Конвертируем содержимое JSON файла в map
     public static Map<?, ?> toMapConverter(Path file, String fileformat) throws IOException {
         Map<?, ?> map = null;
-        if (fileformat.equals("json")) {
+        if (fileformat.equals("json"))  {
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 map = mapper.readValue(file.toFile(), Map.class);
