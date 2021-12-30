@@ -16,7 +16,7 @@ public final class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        System.out.println(Differ.generate(filepath1, filepath2));
+        System.out.println(Differ.generate(filepath1, filepath2, formatname));
         return 0;
     }
 
@@ -34,8 +34,8 @@ public final class App implements Callable<Integer> {
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
     private boolean helpRequested = false;
 
-    @Option(names = {"-f", "--format format"}, description = "output format [default: stylish]")
-    private String formatname;
+    @Option(names = {"-f", "--format"}, description = "output format [default: stylish]")
+    private String formatname = "plain";
 
     @Option(names = {"-v", "--version "}, description = "Print version information and exit.")
     private boolean versionRequested = false;
