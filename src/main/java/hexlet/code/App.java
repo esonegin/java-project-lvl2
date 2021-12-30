@@ -35,7 +35,7 @@ public final class App implements Callable<Integer> {
     private boolean helpRequested = false;
 
     @Option(names = {"-f", "--format"}, description = "output format [default: stylish]")
-    private String formatname = "plain";
+    private String formatname = "stylish";
 
     @Option(names = {"-v", "--version "}, description = "Print version information and exit.")
     private boolean versionRequested = false;
