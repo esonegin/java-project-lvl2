@@ -1,5 +1,6 @@
 package hexlet.code.formatters;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,22 +9,8 @@ public class Plain {
     public static String plain(List<Map<?, ?>> list) {
         StringBuilder res = new StringBuilder();
         for (Map map : list) {
-            if (map.get("value1") != null && map.get("value1").getClass().toString().equals("class java.lang.String")) {
-                map.put("value1", "'" + map.get("value1") + "'");
-            }
-            if (map.get("value2") != null && map.get("value2").getClass().toString().equals("class java.lang.String")) {
-                map.put("value2", "'" + map.get("value2") + "'");
-            }
-            if (map.get("value1") != null
-                    && (map.get("value1").getClass().toString().equals("class java.util.ArrayList")
-                    | (map.get("value1").getClass().toString().equals("class java.util.LinkedHashMap")))) {
-                map.put("value1", "[complex value]");
-            }
-            if (map.get("value2") != null
-                    && (map.get("value2").getClass().toString().equals("class java.util.ArrayList")
-                    | (map.get("value2").getClass().toString().equals("class java.util.LinkedHashMap")))) {
-                map.put("value2", "[complex value]");
-            }
+            map.put("value1", checkingOwnershipObject(map.get("value1")));
+            map.put("value2", checkingOwnershipObject(map.get("value2")));
 
             if (map.get("status").equals("update")) {
                 res.append("Property '").append(map.get("field"))
@@ -47,5 +34,19 @@ public class Plain {
             res.deleteCharAt(res.length() - 1);
         }
         return res.toString();
+    }
+
+    public static Object checkingOwnershipObject(Object obj) {
+        Object result = null;
+        if (obj instanceof String) {
+            result = "'" + obj + "'";
+        }
+        if (obj instanceof ArrayList<?> | obj instanceof Map<?, ?>) {
+            result = "[complex value]";
+        }
+        if (obj instanceof Boolean | obj instanceof Integer) {
+            result = obj;
+        }
+        return result;
     }
 }

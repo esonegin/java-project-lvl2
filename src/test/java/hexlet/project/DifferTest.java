@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Set;
@@ -16,7 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Arrays;
 
-import static hexlet.code.Parser.toMapConverter;
+import static hexlet.code.Differ.fileAsAString;
+import static hexlet.code.Parser.toMap;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -247,7 +248,7 @@ public class DifferTest {
 
     @Test
     public void breakJSONPathGenerateTest() {
-        Throwable thrown = assertThrows(FileNotFoundException.class, () ->
+        Throwable thrown = assertThrows(NoSuchFileException.class, () ->
                 Differ.generate(
                         "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath.json",
                         "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json",
@@ -282,16 +283,16 @@ public class DifferTest {
         expected.put("timeout", putInt);
         expected.put("proxy", "123.234.53.22");
         expected.put("follow", false);
-        Map<?, ?> actual = toMapConverter(
-                Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"), "json");
+        Map<?, ?> actual = toMap(fileAsAString(Path.of(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json")), "json");
         assertEquals(expected, actual);
     }
 
     @Test
     public void getEmptyMapConverterTest() throws Exception {
         LinkedHashMap<String, Object> expected = new LinkedHashMap<>();
-        Map<?, ?> actual = toMapConverter(
-                Path.of("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"), "json");
+        Map<?, ?> actual = toMap(fileAsAString(Path.of(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json")), "json");
         assertEquals(0, actual.size());
         assertEquals(expected, actual);
     }
@@ -388,7 +389,7 @@ public class DifferTest {
 
     @Test
     public void breakYmlPathGenerateTest() {
-        Throwable thrown = assertThrows(FileNotFoundException.class, () ->
+        Throwable thrown = assertThrows(NoSuchFileException.class, () ->
                 Differ.generate(
                         "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath.yml",
                         "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml",
@@ -438,11 +439,11 @@ public class DifferTest {
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json",
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json",
                 "json");
-        String expected = "{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"}"
-                + "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"}"
-                + "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"}"
-                + "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"}"
-                + "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}";
+        String expected = "[{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"},"
+                + "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"},"
+                + "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"},"
+                + "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"},"
+                + "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}]";
 
         Assert.assertEquals(expected, actual);
     }
@@ -464,7 +465,7 @@ public class DifferTest {
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
                 "json");
-        String expected = "";
+        String expected = "[]";
 
         Assert.assertEquals(expected, actual);
     }
@@ -475,7 +476,7 @@ public class DifferTest {
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json",
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/empty.yml",
                 "json");
-        String expected = "";
+        String expected = "[]";
 
         Assert.assertEquals(expected, actual);
     }
@@ -486,11 +487,11 @@ public class DifferTest {
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath1.yml",
                 "/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml",
                 "json");
-        String expected = "{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"}"
-                + "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"}"
-                + "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"}"
-                + "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"}"
-                + "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}";
+        String expected = "[{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"},"
+                + "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"},"
+                + "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"},"
+                + "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"},"
+                + "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}]";
 
         Assert.assertEquals(expected, actual);
     }

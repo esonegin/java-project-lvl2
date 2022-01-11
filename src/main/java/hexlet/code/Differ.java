@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,32 +11,32 @@ import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.Objects;
 
-import static hexlet.code.Parser.toMapConverter;
+import static hexlet.code.Parser.toMap;
 
 public class Differ {
 
     public static String generate(String filepath1, String filepath2, String formatName) throws IOException {
-        //Получаем формат файла
-        String fileformat = "";
-        String filename = String.valueOf(filepath1);
-        if (filename.contains("json")) {
-            fileformat = "json";
-        } else if (String.valueOf(filepath1).contains("yml")) {
-            fileformat = "yml";
-        }
-        Map<?, ?> firstMap = toMapConverter(Path.of(filepath1), fileformat);
-        Map<?, ?> secondMap = toMapConverter(Path.of(filepath2), fileformat);
-
+        //Получаем формат файлов
+        String fileformat1 = formatCheck(filepath1);
+        String fileformat2 = formatCheck(filepath2);
+        Map<?, ?> firstMap = toMap(fileAsAString(Path.of(filepath1)), fileformat1);
+        Map<?, ?> secondMap = toMap(fileAsAString(Path.of(filepath2)), fileformat2);
         TreeSet<Object> sortedKeys = getSortedKeys(firstMap, secondMap);
         List<Map<?, ?>> list = generateDiff(firstMap, secondMap, sortedKeys);
-
-        return new Formatter(formatName, list).formatter();
+        return Formatter.formatter(formatName, list);
     }
 
     public static String generate(String filepath1, String filepath2) throws IOException {
         return generate(filepath1, filepath2, "stylish");
     }
 
+    public static String fileAsAString(Path filepath) throws IOException {
+        return Files.readString(filepath);
+    }
+
+    public static String formatCheck(String filepath) {
+        return filepath.substring(filepath.lastIndexOf('.') + 1);
+    }
 
     public static List<Map<?, ?>> generateDiff(Map<?, ?> first, Map<?, ?> second, TreeSet<Object> getSortedKeys) {
         List<Map<?, ?>> result = new ArrayList<>();

@@ -9,9 +9,7 @@ import java.util.Map;
 public class Json {
     public static String json(List<Map<?, ?>> list) throws JsonProcessingException {
         String res = "";
-        for (Map map : list) {
-            res += new ObjectMapper().writeValueAsString(map);
-        }
+        res += new ObjectMapper().writeValueAsString(list);
         return res;
     }
 }
