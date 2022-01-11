@@ -6,6 +6,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
+import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 @SuppressWarnings("checkstyle:RegexpSingleline")
@@ -16,7 +17,7 @@ public final class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        System.out.println(Differ.generate(filepath1, filepath2, formatname));
+        System.out.println(Differ.generate(Path.of(filepath1), Path.of(filepath2), formatname));
         return 0;
     }
 

@@ -15,18 +15,18 @@ import static hexlet.code.Parser.toMap;
 
 public class Differ {
 
-    public static String generate(String filepath1, String filepath2, String formatName) throws IOException {
+    public static String generate(Path filepath1, Path filepath2, String formatName) throws IOException {
         //Получаем формат файлов
-        String fileformat1 = formatCheck(filepath1);
-        String fileformat2 = formatCheck(filepath2);
-        Map<?, ?> firstMap = toMap(fileAsAString(Path.of(filepath1)), fileformat1);
-        Map<?, ?> secondMap = toMap(fileAsAString(Path.of(filepath2)), fileformat2);
+        String fileformat1 = formatCheck(String.valueOf(filepath1));
+        String fileformat2 = formatCheck(String.valueOf(filepath2));
+        Map<?, ?> firstMap = toMap(fileAsAString(Path.of(String.valueOf(filepath1))), fileformat1);
+        Map<?, ?> secondMap = toMap(fileAsAString(Path.of(String.valueOf(filepath2))), fileformat2);
         TreeSet<Object> sortedKeys = getSortedKeys(firstMap, secondMap);
         List<Map<?, ?>> list = generateDiff(firstMap, secondMap, sortedKeys);
         return Formatter.formatter(formatName, list);
     }
 
-    public static String generate(String filepath1, String filepath2) throws IOException {
+    public static String generate(Path filepath1, Path filepath2) throws IOException {
         return generate(filepath1, filepath2, "stylish");
     }
 
