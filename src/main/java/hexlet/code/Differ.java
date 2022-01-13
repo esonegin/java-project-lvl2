@@ -1,15 +1,10 @@
 package hexlet.code;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.TreeSet;
-import java.util.Objects;
+import java.util.*;
 
 import static hexlet.code.Parser.toMap;
 
@@ -19,9 +14,15 @@ public class Differ {
         //Получаем формат файлов
         String fileformat1 = formatCheck(String.valueOf(filepath1));
         String fileformat2 = formatCheck(String.valueOf(filepath2));
-        Map<?, ?> firstMap = toMap(fileAsAString(Path.of(String.valueOf(filepath1))), fileformat1);
-        Map<?, ?> secondMap = toMap(fileAsAString(Path.of(String.valueOf(filepath2))), fileformat2);
+
+        //Получаем мапу данных из файлов
+        Map<?, ?> firstMap = toMap(getDataFromFile(String.valueOf(filepath1)), fileformat1);
+        Map<?, ?> secondMap = toMap(getDataFromFile(String.valueOf(filepath2)), fileformat2);
+
+        //Получаем отсортированные ключи
         TreeSet<Object> sortedKeys = getSortedKeys(firstMap, secondMap);
+
+        //Получаем список мап со статусами
         List<Map<?, ?>> list = generateDiff(firstMap, secondMap, sortedKeys);
         return Formatter.formatter(formatName, list);
     }
@@ -69,4 +70,18 @@ public class Differ {
         mergedKeys.addAll(keys2);
         return mergedKeys;
     }
+
+    public static String getDataFromFile(String path) {
+        StringBuilder result = new StringBuilder();
+        try (FileReader reader = new FileReader(path)) {
+            int c;
+            while ((c = reader.read()) != -1) {
+                result.append((char) c);
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result.toString();
+    }
+
 }

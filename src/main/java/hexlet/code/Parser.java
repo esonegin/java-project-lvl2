@@ -13,7 +13,6 @@ public class Parser {
         Map<?, ?> map = null;
         if (fileformat.equals("json")) {
             map = getObjectMapper(null).readValue(filecontents, Map.class);
-
         } else if (fileformat.equals("yml")) {
             map = (Map<?, ?>) getObjectMapper(new YAMLFactory()).readValue(filecontents, Map.class);
         }
