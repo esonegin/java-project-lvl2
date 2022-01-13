@@ -9,11 +9,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.TreeSet;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Arrays;
+
 
 import static hexlet.code.Differ.fileAsAString;
 import static hexlet.code.Parser.toMap;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class DifferTest {
