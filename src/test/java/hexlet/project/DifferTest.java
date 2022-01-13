@@ -1,27 +1,19 @@
 package hexlet.project;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import hexlet.code.Differ;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.util.TreeSet;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Arrays;
-
+import java.util.*;
 
 import static hexlet.code.Differ.fileAsAString;
 import static hexlet.code.Parser.toMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class DifferTest {
@@ -249,7 +241,7 @@ public class DifferTest {
 
     @Test
     public void breakJSONPathGenerateTest() {
-        Throwable thrown = assertThrows(MismatchedInputException.class, () ->
+        Throwable thrown = assertThrows(NoSuchFileException.class, () ->
                 Differ.generate(
                         Path.of(("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath.json")),
                         Path.of(("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath2.json")),
@@ -390,7 +382,7 @@ public class DifferTest {
 
     @Test
     public void breakYmlPathGenerateTest() {
-        Throwable thrown = assertThrows(MismatchedInputException.class, () ->
+        Throwable thrown = assertThrows(NoSuchFileException.class, () ->
                 Differ.generate(
                         Path.of(("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath.yml")),
                         Path.of(("/Users/user/Hexlet/java-project-lvl2/src/test/resources/yml/filepath2.yml")),
