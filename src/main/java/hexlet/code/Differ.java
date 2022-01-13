@@ -4,7 +4,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.TreeSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.Objects;
 
 import static hexlet.code.Parser.toMap;
 
