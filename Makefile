@@ -5,9 +5,6 @@ install: # очистить предыдущие запуски
 run-dist: # запустить приложение
 	./build/install/app/bin/app
 
-run-tests: # запустить тесты
-	./src/test/java/hexlet/project/DifferTest.java
-
 check-updates: # проверить обновления зависимостей и плагинов
 	./gradlew dependencyUpdates
 
