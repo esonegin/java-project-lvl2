@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.HashSet;
+
 import static hexlet.code.Differ.fileAsAString;
 import static hexlet.code.Parser.toMap;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -281,8 +282,8 @@ public class DifferTest {
         expected.put("timeout", putInt);
         expected.put("proxy", "123.234.53.22");
         expected.put("follow", false);
-        Map<?, ?> actual = toMap(fileAsAString
-                ("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"),
+        Map<?, ?> actual = toMap(fileAsAString(
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"),
                 "json");
         assertEquals(expected, actual);
     }
@@ -291,7 +292,7 @@ public class DifferTest {
     public void getEmptyMapConverterTest() throws Exception {
         LinkedHashMap<String, Object> expected = new LinkedHashMap<>();
         Map<?, ?> actual = toMap(fileAsAString(
-                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"),
+                        "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"),
                 "json");
         assertEquals(0, actual.size());
         assertEquals(expected, actual);
