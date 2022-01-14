@@ -16,7 +16,7 @@ import static hexlet.code.Parser.toMap;
 
 public class Differ {
 
-    public static String generate(Path filepath1, Path filepath2, String formatName) throws IOException {
+    public static String generate(String filepath1, String filepath2, String formatName) throws IOException {
         //Получаем формат файлов
         String fileformat1 = formatCheck(String.valueOf(filepath1));
         String fileformat2 = formatCheck(String.valueOf(filepath2));
@@ -33,12 +33,12 @@ public class Differ {
         return Formatter.formatter(formatName, list);
     }
 
-    public static String generate(Path filepath1, Path filepath2) throws IOException {
+    public static String generate(String filepath1, String filepath2) throws IOException {
         return generate(filepath1, filepath2, "stylish");
     }
 
-    public static String fileAsAString(Path filepath) throws IOException {
-        return Files.readString(filepath);
+    public static String fileAsAString(String filepath) throws IOException {
+        return Files.readString(Path.of(filepath));
     }
 
     public static String formatCheck(String filepath) {
