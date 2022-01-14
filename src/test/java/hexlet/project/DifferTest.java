@@ -8,11 +8,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.nio.file.NoSuchFileException;
-import java.util.*;
-
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.HashSet;
 import static hexlet.code.Differ.fileAsAString;
 import static hexlet.code.Parser.toMap;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class DifferTest {
@@ -275,14 +281,18 @@ public class DifferTest {
         expected.put("timeout", putInt);
         expected.put("proxy", "123.234.53.22");
         expected.put("follow", false);
-        Map<?, ?> actual = toMap(fileAsAString("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"), "json");
+        Map<?, ?> actual = toMap(fileAsAString
+                ("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/filepath1.json"),
+                "json");
         assertEquals(expected, actual);
     }
 
     @Test
     public void getEmptyMapConverterTest() throws Exception {
         LinkedHashMap<String, Object> expected = new LinkedHashMap<>();
-        Map<?, ?> actual = toMap(fileAsAString("/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"), "json");
+        Map<?, ?> actual = toMap(fileAsAString(
+                "/Users/user/Hexlet/java-project-lvl2/src/test/resources/json/empty.json"),
+                "json");
         assertEquals(0, actual.size());
         assertEquals(expected, actual);
     }
