@@ -5,28 +5,29 @@ import java.util.List;
 import java.util.Map;
 
 public class Plain {
-    //Конвертируем map в JSON строку plain
+    //Конвертируем Map в JSON строку plain
     public static String plain(List<Map<?, ?>> list) {
         StringBuilder res = new StringBuilder();
-        for (Map map : list) {
-            map.put("value1", checkingOwnershipObject(map.get("value1")));
-            map.put("value2", checkingOwnershipObject(map.get("value2")));
 
-            if (map.get("status").equals("update")) {
-                res.append("Property '").append(map.get("field"))
+        for (Map<?, ?> node : list) {
+            Object value1 = stringify(node.get("value1"));
+            Object value2 = stringify(node.get("value2"));
+            if (node.get("status").equals("update")) {
+                res.append("Property '").append(node.get("field"))
                         .append("' was updated. From ")
-                        .append(map.get("value1")).append(" to ")
-                        .append(map.get("value2")).append("\n");
-            } else if (map.get("status").equals("remove")) {
+                        .append(value1)
+                        .append(" to ")
+                        .append(value2).append("\n");
+            } else if (node.get("status").equals("remove")) {
                 res.append("Property '")
-                        .append(map.get("field"))
+                        .append(node.get("field"))
                         .append("' was removed")
                         .append("\n");
-            } else if (map.get("status").equals("added")) {
+            } else if (node.get("status").equals("added")) {
                 res.append("Property '")
-                        .append(map.get("field"))
+                        .append(node.get("field"))
                         .append("' was added with value: ")
-                        .append(map.get("value2"))
+                        .append(value2)
                         .append("\n");
             }
         }
@@ -36,17 +37,14 @@ public class Plain {
         return res.toString();
     }
 
-    public static Object checkingOwnershipObject(Object obj) {
-        Object result = null;
+    public static Object stringify(Object obj) {
+        //Object result = null;
         if (obj instanceof String) {
-            result = "'" + obj + "'";
+            return "'" + obj + "'";
         }
         if (obj instanceof ArrayList<?> | obj instanceof Map<?, ?>) {
-            result = "[complex value]";
+            return "[complex value]";
         }
-        if (obj instanceof Boolean | obj instanceof Integer) {
-            result = obj;
-        }
-        return result;
+        return obj;
     }
 }
