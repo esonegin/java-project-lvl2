@@ -11,6 +11,9 @@ check-updates: # проверить обновления зависимосте�
 lint: #проверка линтером
 	./gradlew checkstyleMain
 
+report:
+	./gradlew jacocoTestReport
+
 build: #сборка проекта
 	./gradlew clean build
 .PHONY: build
