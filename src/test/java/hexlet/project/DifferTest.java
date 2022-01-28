@@ -8,8 +8,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Arrays;
@@ -42,21 +45,50 @@ public class DifferTest {
 
     }
 
+    public String getPathToTestFile(String name) {
+        return switch (name) {
+            case "filepath1.json" -> "src/test/resources/json/filepath1.json";
+            case "filepath2.json" -> "src/test/resources/json/filepath2.json";
+            case "nestingfilepath1.json" -> "src/test/resources/json/nestingfilepath1.json";
+            case "nestingfilepath2.json" -> "src/test/resources/json/nestingfilepath2.json";
+            case "empty.json" -> "src/test/resources/json/empty.json";
+            case "juststring.json" -> "src/test/resources/json/juststring.json";
+            case "break.json" -> "src/test/resources/json/break.json";
+            case "filepath1.yml" -> "src/test/resources/yml/filepath1.yml";
+            case "filepath2.yml" -> "src/test/resources/yml/filepath2.yml";
+            case "empty.yml" -> "src/test/resources/yml/empty.yml";
+            case "nestingfilepath1.yml" -> "src/test/resources/yml/nestingfilepath1.yml";
+            case "nestingfilepath2.yml" -> "src/test/resources/yml/nestingfilepath2.yml";
+            case "filepath.json" -> "src/test/resources/yml/filepath.json";
+            default -> throw new RuntimeException("Unsupported format: " + name);
+        };
+    }
+
+    public String getExpected(String name) throws IOException {
+        return switch (name) {
+            case "json1json2" -> Files.readString(Paths.get
+                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/json1json2"));
+            case "nestingjson1json2stylish" -> Files.readString(Paths.get
+                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/nestingjson1json2stylish"));
+            case "nestingjson1json2plain" -> Files.readString(Paths.get
+                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/nestingjson1json2plain"));
+            case "json1empty" -> Files.readString(Paths.get
+                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/json1empty"));
+            case "emptyjson1" -> Files.readString(Paths.get
+                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/emptyjson1"));
+            case "nestingjson1json2json" -> Files.readString(Paths.get
+                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/nestingjson1json2json"));
+            default -> throw new RuntimeException("Unsupported format: " + name);
+        };
+    }
+
     @Test
     public void generalJSONGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/filepath1.json")),
-                (("src/test/resources/json/filepath2.json")),
+                (getPathToTestFile("filepath1.json")),
+                (getPathToTestFile("filepath2.json")),
                 "stylish");
-        String expected = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
+        String expected = getExpected("json1json2");
 
         Assert.assertEquals(expected, actual);
     }
@@ -64,35 +96,10 @@ public class DifferTest {
     @Test
     public void plainNestingGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/nestingfilepath1.json")),
-                (("src/test/resources/json/nestingfilepath2.json")),
+                (getPathToTestFile("nestingfilepath1.json")),
+                (getPathToTestFile("nestingfilepath2.json")),
                 "stylish");
-        String expected = """
-                {
-                    chars1: [a, b, c]
-                  - chars2: [d, e, f]
-                  + chars2: false
-                  - checked: false
-                  + checked: true
-                  - default: null
-                  + default: [value1, value2]
-                  - id: 45
-                  + id: null
-                  - key1: value1
-                  + key2: value2
-                    numbers1: [1, 2, 3, 4]
-                  - numbers2: [2, 3, 4, 5]
-                  + numbers2: [22, 33, 44, 55]
-                  - numbers3: [3, 4, 5]
-                  + numbers4: [4, 5, 6]
-                  + obj1: {nestedKey=value, isNested=true}
-                  - setting1: Some value
-                  + setting1: Another value
-                  - setting2: 200
-                  + setting2: 300
-                  - setting3: true
-                  + setting3: none
-                }""";
+        String expected = getExpected("nestingjson1json2stylish");
 
         Assert.assertEquals(expected, actual);
     }
@@ -100,34 +107,9 @@ public class DifferTest {
     @Test
     public void plainNestingWithoutFormatGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/nestingfilepath1.json")),
-                (("src/test/resources/json/nestingfilepath2.json")));
-        String expected = """
-                {
-                    chars1: [a, b, c]
-                  - chars2: [d, e, f]
-                  + chars2: false
-                  - checked: false
-                  + checked: true
-                  - default: null
-                  + default: [value1, value2]
-                  - id: 45
-                  + id: null
-                  - key1: value1
-                  + key2: value2
-                    numbers1: [1, 2, 3, 4]
-                  - numbers2: [2, 3, 4, 5]
-                  + numbers2: [22, 33, 44, 55]
-                  - numbers3: [3, 4, 5]
-                  + numbers4: [4, 5, 6]
-                  + obj1: {nestedKey=value, isNested=true}
-                  - setting1: Some value
-                  + setting1: Another value
-                  - setting2: 200
-                  + setting2: 300
-                  - setting3: true
-                  + setting3: none
-                }""";
+                (getPathToTestFile("nestingfilepath1.json")),
+                (getPathToTestFile("nestingfilepath2.json")));
+        String expected = getExpected("nestingjson1json2stylish");
 
         Assert.assertEquals(expected, actual);
     }
@@ -135,48 +117,25 @@ public class DifferTest {
     @Test
     public void plainJSONestingGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/nestingfilepath1.json")),
-                (("src/test/resources/json/nestingfilepath2.json")),
+                (getPathToTestFile("nestingfilepath1.json")),
+                (getPathToTestFile("nestingfilepath2.json")),
                 "plain");
-        String expected = """
-                Property 'chars2' was updated. From [complex value] to false
-                Property 'checked' was updated. From false to true
-                Property 'default' was updated. From null to [complex value]
-                Property 'id' was updated. From 45 to null
-                Property 'key1' was removed
-                Property 'key2' was added with value: 'value2'
-                Property 'numbers2' was updated. From [complex value] to [complex value]
-                Property 'numbers3' was removed
-                Property 'numbers4' was added with value: [complex value]
-                Property 'obj1' was added with value: [complex value]
-                Property 'setting1' was updated. From 'Some value' to 'Another value'
-                Property 'setting2' was updated. From 200 to 300
-                Property 'setting3' was updated. From true to 'none'""";
-
+        String expected = getExpected("nestingjson1json2plain");
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void generalJSONMultiRunTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/filepath1.json")),
-                (("src/test/resources/json/filepath2.json")),
+                (getPathToTestFile("filepath1.json")),
+                (getPathToTestFile("filepath2.json")),
                 "stylish");
-        String expected = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
-
+        String expected = getExpected("json1json2");
         Assert.assertEquals(expected, actual);
         for (int i = 0; i < overVal; i++) {
             actual = Differ.generate(
-                    (("src/test/resources/json/filepath1.json")),
-                    (("src/test/resources/json/filepath2.json")),
+                    (getPathToTestFile("filepath1.json")),
+                    (getPathToTestFile("filepath2.json")),
                     "stylish");
             Assert.assertEquals(expected, actual);
         }
@@ -185,42 +144,28 @@ public class DifferTest {
     @Test
     public void emptyJSONSecondGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/filepath1.json")),
-                (("src/test/resources/json/empty.json")),
+                (getPathToTestFile("filepath1.json")),
+                (getPathToTestFile("empty.json")),
                 "stylish");
-        String expected = """
-                {
-                  - follow: false
-                  - host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                }""";
-
+        String expected = getExpected("json1empty");
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void emptyJSONFirstGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/empty.json")),
-                (("src/test/resources/json/filepath1.json")),
+                (getPathToTestFile("empty.json")),
+                (getPathToTestFile("filepath1.json")),
                 "stylish");
-        String expected = """
-                {
-                  + follow: false
-                  + host: hexlet.io
-                  + proxy: 123.234.53.22
-                  + timeout: 50
-                }""";
-
+        String expected = getExpected("emptyjson1");
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void emptyJSONFirstAndSecondGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/empty.json")),
-                (("src/test/resources/json/empty.json")),
+                (getPathToTestFile("empty.json")),
+                (getPathToTestFile("empty.json")),
                 "stylish");
         String expected = "{\n}";
         Assert.assertEquals(expected, actual);
@@ -230,8 +175,8 @@ public class DifferTest {
     public void notJSONTGenerateest() {
         Throwable thrown = assertThrows(JsonParseException.class, () ->
                 Differ.generate(
-                        (("src/test/resources/json/empty.json")),
-                        (("src/test/resources/json/juststring.json")),
+                        (getPathToTestFile("empty.json")),
+                        (getPathToTestFile("juststring.json")),
                         "stylish"));
         assertNotNull(thrown.getMessage());
 
@@ -241,8 +186,8 @@ public class DifferTest {
     public void breakJSONGenerateTest() {
         Throwable thrown = assertThrows(JsonParseException.class, () ->
                 Differ.generate(
-                        (("src/test/resources/json/filepath1.json")),
-                        (("src/test/resources/json/break.json")),
+                        (getPathToTestFile("filepath1.json")),
+                        (getPathToTestFile("break.json")),
                         "stylish"));
         assertNotNull(thrown.getMessage());
     }
@@ -251,8 +196,8 @@ public class DifferTest {
     public void breakJSONPathGenerateTest() {
         Throwable thrown = assertThrows(NoSuchFileException.class, () ->
                 Differ.generate(
-                        (("src/test/resources/json/filepath.json")),
-                        (("src/test/resources/json/filepath2.json")),
+                        (getPathToTestFile("filepath.json")),
+                        (getPathToTestFile("filepath2.json")),
                         "stylish"));
         assertNotNull(thrown.getMessage());
     }
@@ -284,8 +229,7 @@ public class DifferTest {
         expected.put("timeout", putInt);
         expected.put("proxy", "123.234.53.22");
         expected.put("follow", false);
-        Map<?, ?> actual = toMap(fileAsAString(
-                        "src/test/resources/json/filepath1.json"),
+        Map<?, ?> actual = toMap(fileAsAString((getPathToTestFile("filepath1.json"))),
                 "json");
         assertEquals(expected, actual);
     }
@@ -293,8 +237,7 @@ public class DifferTest {
     @Test
     public void getEmptyMapConverterTest() throws Exception {
         LinkedHashMap<String, Object> expected = new LinkedHashMap<>();
-        Map<?, ?> actual = toMap(fileAsAString(
-                        "src/test/resources/json/empty.json"),
+        Map<?, ?> actual = toMap(fileAsAString((getPathToTestFile("empty.json"))),
                 "json");
         assertEquals(0, actual.size());
         assertEquals(expected, actual);
@@ -303,18 +246,10 @@ public class DifferTest {
     @Test
     public void generalYmlGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/yml/filepath1.yml")),
-                (("src/test/resources/yml/filepath2.yml")),
+                (getPathToTestFile("filepath1.yml")),
+                (getPathToTestFile("filepath2.yml")),
                 "stylish");
-        String expected = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
+        String expected = getExpected("json1json2");
 
         Assert.assertEquals(expected, actual);
     }
@@ -322,24 +257,15 @@ public class DifferTest {
     @Test
     public void generaYmllMultiRunTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/yml/filepath1.yml")),
-                (("src/test/resources/yml/filepath2.yml")),
+                (getPathToTestFile("filepath1.yml")),
+                (getPathToTestFile("filepath2.yml")),
                 "stylish");
-        String expected = """
-                {
-                  - follow: false
-                    host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                  + timeout: 20
-                  + verbose: true
-                }""";
-
+        String expected = getExpected("json1json2");
         Assert.assertEquals(expected, actual);
         for (int i = 0; i < overVal; i++) {
             actual = Differ.generate(
-                    (("src/test/resources/yml/filepath1.yml")),
-                    (("src/test/resources/yml/filepath2.yml")),
+                    (getPathToTestFile("filepath1.yml")),
+                    (getPathToTestFile("filepath2.yml")),
                     "stylish");
             Assert.assertEquals(expected, actual);
         }
@@ -348,16 +274,10 @@ public class DifferTest {
     @Test
     public void emptyYmlSecondGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/yml/filepath1.yml")),
-                (("src/test/resources/yml/empty.yml")),
+                (getPathToTestFile("filepath1.yml")),
+                (getPathToTestFile("empty.yml")),
                 "stylish");
-        String expected = """
-                {
-                  - follow: false
-                  - host: hexlet.io
-                  - proxy: 123.234.53.22
-                  - timeout: 50
-                }""";
+        String expected = getExpected("json1empty");
 
         Assert.assertEquals(expected, actual);
     }
@@ -365,16 +285,10 @@ public class DifferTest {
     @Test
     public void emptyYmlFirstGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/yml/empty.yml")),
-                (("src/test/resources/yml/filepath1.yml")),
+                (getPathToTestFile("empty.yml")),
+                (getPathToTestFile("filepath1.yml")),
                 "stylish");
-        String expected = """
-                {
-                  + follow: false
-                  + host: hexlet.io
-                  + proxy: 123.234.53.22
-                  + timeout: 50
-                }""";
+        String expected = getExpected("emptyjson1");
 
         Assert.assertEquals(expected, actual);
     }
@@ -382,8 +296,8 @@ public class DifferTest {
     @Test
     public void emptyYmlFirstAndSecondGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/yml/empty.yml")),
-                (("src/test/resources/yml/empty.yml")),
+                (getPathToTestFile("empty.yml")),
+                (getPathToTestFile("empty.yml")),
                 "stylish");
         String expected = "{\n}";
 
@@ -392,10 +306,10 @@ public class DifferTest {
 
     @Test
     public void breakYmlPathGenerateTest() {
-        Throwable thrown = assertThrows(NoSuchFileException.class, () ->
+        Throwable thrown = assertThrows(RuntimeException.class, () ->
                 Differ.generate(
-                        (("src/test/resources/yml/filepath.yml")),
-                        (("src/test/resources/yml/filepath2.yml")),
+                        (getPathToTestFile("filepath.yml")),
+                        (getPathToTestFile("filepath2.yml")),
                         "stylish"));
         assertNotNull(thrown.getMessage());
     }
@@ -403,50 +317,20 @@ public class DifferTest {
     @Test
     public void generalYmlNestingGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/yml/nestingfilepath1.yml")),
-                (("src/test/resources/yml/nestingfilepath2.yml")),
+                (getPathToTestFile("nestingfilepath1.yml")),
+                (getPathToTestFile("nestingfilepath2.yml")),
                 "stylish");
-        String expected = """
-                {
-                    chars1: [a, b, c]
-                  - chars2: [d, e, f]
-                  + chars2: false
-                  - checked: false
-                  + checked: true
-                  - default: null
-                  + default: [value1, value2]
-                  - id: 45
-                  + id: null
-                  - key1: value1
-                  + key2: value2
-                    numbers1: [1, 2, 3, 4]
-                  - numbers2: [2, 3, 4, 5]
-                  + numbers2: [22, 33, 44, 55]
-                  - numbers3: [3, 4, 5]
-                  + numbers4: [4, 5, 6]
-                  + obj1: {nestedKey=value, isNested=true}
-                  - setting1: Some value
-                  + setting1: Another value
-                  - setting2: 200
-                  + setting2: 300
-                  - setting3: true
-                  + setting3: none
-                }""";
-
+        String expected = getExpected("nestingjson1json2stylish");
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void generalJSONDefaultGenerateTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/filepath1.json")),
-                (("src/test/resources/json/filepath2.json")),
+                (getPathToTestFile("filepath1.json")),
+                (getPathToTestFile("filepath2.json")),
                 "json");
-        String expected = "[{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"},"
-                + "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"},"
-                + "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"},"
-                + "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"},"
-                + "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}]";
+        String expected = getExpected("nestingjson1json2json");
 
         Assert.assertEquals(expected, actual);
     }
@@ -454,19 +338,18 @@ public class DifferTest {
     @Test
     public void emptyJSONAndYmlPlainTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/empty.json")),
-                (("src/test/resources/yml/empty.yml")),
+                (getPathToTestFile("empty.json")),
+                (getPathToTestFile("empty.yml")),
                 "plain");
         String expected = "";
-
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void emptyJSONAndYmlJsonTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/empty.json")),
-                (("src/test/resources/yml/empty.yml")),
+                (getPathToTestFile("empty.json")),
+                (getPathToTestFile("empty.yml")),
                 "json");
         String expected = "[]";
 
@@ -476,8 +359,8 @@ public class DifferTest {
     @Test
     public void emptyJSONAndYmlStylishTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/json/empty.json")),
-                (("src/test/resources/yml/empty.yml")),
+                (getPathToTestFile("empty.json")),
+                (getPathToTestFile("empty.yml")),
                 "json");
         String expected = "[]";
 
@@ -487,14 +370,10 @@ public class DifferTest {
     @Test
     public void ymlToJSONTest() throws Exception {
         String actual = Differ.generate(
-                (("src/test/resources/yml/filepath1.yml")),
-                (("src/test/resources/yml/filepath2.yml")),
+                (getPathToTestFile("filepath1.yml")),
+                (getPathToTestFile("filepath2.yml")),
                 "json");
-        String expected = "[{\"field\":\"follow\",\"value2\":null,\"value1\":false,\"status\":\"remove\"},"
-                + "{\"field\":\"host\",\"value2\":\"hexlet.io\",\"value1\":\"hexlet.io\",\"status\":\"nothing\"},"
-                + "{\"field\":\"proxy\",\"value2\":null,\"value1\":\"123.234.53.22\",\"status\":\"remove\"},"
-                + "{\"field\":\"timeout\",\"value2\":20,\"value1\":50,\"status\":\"update\"},"
-                + "{\"field\":\"verbose\",\"value2\":true,\"value1\":null,\"status\":\"added\"}]";
+        String expected = getExpected("nestingjson1json2json");
 
         Assert.assertEquals(expected, actual);
     }

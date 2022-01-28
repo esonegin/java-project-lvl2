@@ -1,0 +1,1 @@
+[{"field":"follow","value2":null,"value1":false,"status":"remove"},{"field":"host","value2":"hexlet.io","value1":"hexlet.io","status":"nothing"},{"field":"proxy","value2":null,"value1":"123.234.53.22","status":"remove"},{"field":"timeout","value2":20,"value1":50,"status":"update"},{"field":"verbose","value2":true,"value1":null,"status":"added"}]

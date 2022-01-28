@@ -15,7 +15,7 @@ public class Parser {
     public static ObjectMapper getObjectMapper(String format) {
         return switch (format) {
             case "json" -> new ObjectMapper();
-            case "yml" -> new ObjectMapper(new YAMLFactory());
+            case "yml", "yaml" -> new ObjectMapper(new YAMLFactory());
             default -> throw new RuntimeException("Unsupported format: " + format);
         };
     }

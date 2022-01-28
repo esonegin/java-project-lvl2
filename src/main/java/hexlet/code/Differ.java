@@ -53,8 +53,7 @@ public class Differ {
                 node.put("status", "remove");
             } else if (!first.containsKey(key)) {
                 node.put("status", "added");
-            } else if (first.containsKey(key) && second.containsKey(key)
-                    && Objects.equals(first.get(key), second.get(key))) {
+            } else if (Objects.equals(first.get(key), second.get(key))) {
                 node.put("status", "nothing");
             } else {
                 node.put("status", "update");

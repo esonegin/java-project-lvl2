@@ -26,10 +26,10 @@ public final class App implements Callable<Integer> {
     }
 
     @Parameters(index = "0", description = "path to first file")
-    private static String filepath1;
+    private String filepath1;
 
     @Parameters(index = "1", description = "path to second file")
-    private static String filepath2;
+    private String filepath2;
 
     @Option(names = {"-h", "--help"}, usageHelp = true, description = "display a help message")
     private boolean helpRequested = false;
