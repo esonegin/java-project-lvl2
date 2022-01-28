@@ -14,4 +14,4 @@ jobs:
           cache: 'gradle'
       - run: make build
       - run: make lint
-      - run: make
+      - run: make report
