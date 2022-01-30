@@ -45,7 +45,7 @@ public class DifferTest {
 
     }
 
-    public String getPathToTestFile(String name) {
+    final String getPathToTestFile(String name) {
         return switch (name) {
             case "filepath1.json" -> "src/test/resources/json/filepath1.json";
             case "filepath2.json" -> "src/test/resources/json/filepath2.json";
@@ -64,20 +64,20 @@ public class DifferTest {
         };
     }
 
-    public String getExpected(String name) throws IOException {
+    final String getExpected(String name) throws IOException {
         return switch (name) {
-            case "json1json2" -> Files.readString(Paths.get
-                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/json1json2"));
-            case "nestingjson1json2stylish" -> Files.readString(Paths.get
-                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/nestingjson1json2stylish"));
-            case "nestingjson1json2plain" -> Files.readString(Paths.get
-                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/nestingjson1json2plain"));
-            case "json1empty" -> Files.readString(Paths.get
-                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/json1empty"));
-            case "emptyjson1" -> Files.readString(Paths.get
-                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/emptyjson1"));
-            case "nestingjson1json2json" -> Files.readString(Paths.get
-                    ("/Users/fixed/IdeaProjects/java-project-lvl2/src/test/resources/expected/nestingjson1json2json"));
+            case "json1json2" -> Files.readString(Paths.get(
+                    "src/test/resources/expected/json1json2"));
+            case "nestingjson1json2stylish" -> Files.readString(Paths.get(
+                    "src/test/resources/expected/nestingjson1json2stylish"));
+            case "nestingjson1json2plain" -> Files.readString(Paths.get(
+                    "src/test/resources/expected/nestingjson1json2plain"));
+            case "json1empty" -> Files.readString(Paths.get(
+                    "src/test/resources/expected/json1empty"));
+            case "emptyjson1" -> Files.readString(Paths.get(
+                    "src/test/resources/expected/emptyjson1"));
+            case "nestingjson1json2json" -> Files.readString(Paths.get(
+                    "src/test/resources/expected/nestingjson1json2json"));
             default -> throw new RuntimeException("Unsupported format: " + name);
         };
     }
