@@ -3,10 +3,9 @@ package hexlet.project;
 import com.fasterxml.jackson.core.JsonParseException;
 
 import hexlet.code.Differ;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,12 +34,13 @@ public class DifferTest {
     private final int overIndex = 1002;
     private final int putInt = 50;
 
-    @BeforeClass
+
+    @BeforeAll
     public static void globalSetUp() {
 
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
     }
@@ -90,7 +90,7 @@ public class DifferTest {
                 "stylish");
         String expected = getExpected("json1json2");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -101,7 +101,7 @@ public class DifferTest {
                 "stylish");
         String expected = getExpected("nestingjson1json2stylish");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class DifferTest {
                 (getPathToTestFile("nestingfilepath2.json")));
         String expected = getExpected("nestingjson1json2stylish");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class DifferTest {
                 (getPathToTestFile("nestingfilepath2.json")),
                 "plain");
         String expected = getExpected("nestingjson1json2plain");
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -131,13 +131,13 @@ public class DifferTest {
                 (getPathToTestFile("filepath2.json")),
                 "stylish");
         String expected = getExpected("json1json2");
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
         for (int i = 0; i < overVal; i++) {
             actual = Differ.generate(
                     (getPathToTestFile("filepath1.json")),
                     (getPathToTestFile("filepath2.json")),
                     "stylish");
-            Assert.assertEquals(expected, actual);
+            assertEquals(expected, actual);
         }
     }
 
@@ -148,7 +148,7 @@ public class DifferTest {
                 (getPathToTestFile("empty.json")),
                 "stylish");
         String expected = getExpected("json1empty");
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -158,7 +158,7 @@ public class DifferTest {
                 (getPathToTestFile("filepath1.json")),
                 "stylish");
         String expected = getExpected("emptyjson1");
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -168,7 +168,7 @@ public class DifferTest {
                 (getPathToTestFile("empty.json")),
                 "stylish");
         String expected = "{\n}";
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -251,7 +251,7 @@ public class DifferTest {
                 "stylish");
         String expected = getExpected("json1json2");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -261,13 +261,13 @@ public class DifferTest {
                 (getPathToTestFile("filepath2.yml")),
                 "stylish");
         String expected = getExpected("json1json2");
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
         for (int i = 0; i < overVal; i++) {
             actual = Differ.generate(
                     (getPathToTestFile("filepath1.yml")),
                     (getPathToTestFile("filepath2.yml")),
                     "stylish");
-            Assert.assertEquals(expected, actual);
+            assertEquals(expected, actual);
         }
     }
 
@@ -279,7 +279,7 @@ public class DifferTest {
                 "stylish");
         String expected = getExpected("json1empty");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -290,7 +290,7 @@ public class DifferTest {
                 "stylish");
         String expected = getExpected("emptyjson1");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -301,7 +301,7 @@ public class DifferTest {
                 "stylish");
         String expected = "{\n}";
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -321,7 +321,7 @@ public class DifferTest {
                 (getPathToTestFile("nestingfilepath2.yml")),
                 "stylish");
         String expected = getExpected("nestingjson1json2stylish");
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -332,7 +332,7 @@ public class DifferTest {
                 "json");
         String expected = getExpected("nestingjson1json2json");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -342,7 +342,7 @@ public class DifferTest {
                 (getPathToTestFile("empty.yml")),
                 "plain");
         String expected = "";
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -353,7 +353,7 @@ public class DifferTest {
                 "json");
         String expected = "[]";
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -364,7 +364,7 @@ public class DifferTest {
                 "json");
         String expected = "[]";
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -375,6 +375,6 @@ public class DifferTest {
                 "json");
         String expected = getExpected("nestingjson1json2json");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 }
